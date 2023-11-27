@@ -55,26 +55,52 @@
 
 import { useState } from 'react';
 
+//Le mot-clé JavaScript export rend cette fonction accessible à l’extérieur de ce fichier. 
+// Le mot-clé default indique aux autres fichiers utilisant votre code qu’il s’agit là de la fonction principale de votre fichier.
 // Les composants React doivent ne renvoyer qu’un unique élément JSX, et non plusieurs éléments JSX adjacents, 
 export default function Board() {
+  const [squares,setSquares] = useState(Array(9).fill(null));
+ 
+  function handleClick(i){
+    console.log("salam")
+    const nextSquare = squares.slice();
+    nextSquare[i]="X";
+    setSquares(nextSquare);
+  }
   return (
     <>
       <div className="board-row">
-        <button className="square">1</button>
-        <button className="square">2</button>
-        <button className="square">3</button>
+        <Square value={squares[0]} onSquareClick={handleClick(0)} />
+        <Square value={squares[1]}/>
+        <Square value={squares[2]}/>
       </div>
       <div className="board-row">
-        <button className="square">4</button>
-        <button className="square">5</button>
-        <button className="square">6</button>
+      <Square value={squares[3]}/>
+      <Square value={squares[4]}/>
+      <Square value={squares[5]}/>
       </div>
       <div className="board-row">
-        <button className="square">7</button>
-        <button className="square">8</button>
-        <button className="square">9</button>
+      <Square value={squares[6]}/>
+      <Square value={squares[7]}/>
+      <Square value={squares[8]}/>
       </div>
     </>
   );
 }
 
+function Square({value,onSquareClick}){
+  // const [value,setValue] = useState(null);
+
+  // function handleClick(){
+  //   setValue("X")
+  //   console.log("cliqué ! ")
+  // }
+
+  return <button  className='square' onclick={onSquareClick}>{value}</button>
+}
+
+//remarque : on peut penser que le Board a besoin de « demander » à chaque Square quel est son état interne.  
+// Même si une telle approche est techniquement possible en React, nous la déconseillons car elle engendre du 
+// code difficile à comprendre, difficile à remanier et fortement sujet aux bugs.  
+// La meilleure approche consiste plutôt à stocker l’état du jeu dans le composant parent Board, 
+// plutôt qu’éparpillé dans chaque Square.
